@@ -34,6 +34,7 @@ void insert_before(list1* L, list1* p, list1* n) {
 		r->next = NULL;
 	}*/
 }*/
+
 int search(list1* L, int key) {
 	int data;
 	data = L->data;

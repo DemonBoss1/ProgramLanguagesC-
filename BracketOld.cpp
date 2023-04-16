@@ -7,7 +7,7 @@ namespace Old{
 
 
 	void ErrorNoOpenBracket(int i, char c) {
-		std::cout << "Error: The opening parenthesis '" << c << "'. Position of the closing parenthesis: " << i << endl;
+		std::cout << "Error: The opening parenthesis '" << c << "'. Position of the closing parenthesis: " << i << " line" << endl;
 		countErrorNoOpenBracket++;
 	}
 	void caseCloseBracket(map<char, int>& bracketCount, vector<char>& lastOpenBracket, int i, char c) {
@@ -48,6 +48,7 @@ namespace Old{
 		bool star = false;
 		bool lineComent = false;
 		bool multilineComment = false;
+		int line = 1;
 		while (!fin.eof())
 		{
 			ch = fin.get();
@@ -62,20 +63,20 @@ namespace Old{
 				{
 				case ')':
 					if (solidus)solidus = false;
-					caseCloseBracket(bracketCount, lastOpenBracket, i, '(');
+					caseCloseBracket(bracketCount, lastOpenBracket, line, '(');
 					break;
 				case ']':
 					if (solidus)solidus = false;
-					caseCloseBracket(bracketCount, lastOpenBracket, i, '[');
+					caseCloseBracket(bracketCount, lastOpenBracket, line, '[');
 					break;
 				case '}':
 					it = bracketCount.find('{');
 					if (solidus)solidus = false;
-					caseCloseBracket(bracketCount, lastOpenBracket, i, '{');
+					caseCloseBracket(bracketCount, lastOpenBracket, line, '{');
 					break;
 				case '>':
 					if (solidus)solidus = false;
-					caseCloseBracket(bracketCount, lastOpenBracket, i, '<');
+					caseCloseBracket(bracketCount, lastOpenBracket, line, '<');
 					break;
 				case '/':
 					if (solidus) {
@@ -90,6 +91,9 @@ namespace Old{
 						multilineComment = true;
 					}
 					break;
+				case '\n':
+					line++;
+					break;
 				default:
 					if (solidus)solidus = false;
 					break;
@@ -97,7 +101,10 @@ namespace Old{
 			}
 			else {
 				if (lineComent) {
-					if (ch == '\n') lineComent = false;
+					if (ch == '\n') {
+						lineComent = false;
+						line++;
+					}
 				}
 				else {
 					switch (ch) {
@@ -109,6 +116,9 @@ namespace Old{
 							solidus = false;
 							multilineComment = false;
 						}
+						break;
+					case '\n':
+						line++;
 						break;
 					default:
 						star = true;

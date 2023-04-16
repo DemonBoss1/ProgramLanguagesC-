@@ -1,27 +1,29 @@
 #include "main.h"
 
-void createHistogram(char* str) {
+void createHistogram(string str) {
     vector <char> words;
-    char* techstr = str;
-    while (*techstr != '\0')
+    string techstr = str;
+    int j = 0;
+    while (techstr[j] != '\0')
     {
-        if (find(words.begin(), words.end(), *techstr) == words.end()) words.push_back(*techstr);
-        techstr++;
+        if (find(words.begin(), words.end(), techstr[j]) == words.end()) words.push_back(techstr[j]);
+        j++;
     }
     vector <int> histogram;
     techstr = str;
     histogram.resize(words.size());
     for (int i = 0; i < words.size(); i++)
         histogram[i] = 0;
-    while (*techstr != '\0')
+    j = 0;
+    while (techstr[j] != '\0')
     {
         int i = 0;
-        while (*techstr != words[i]) {
+        while (techstr[j] != words[i]) {
             i++;
 
         }
         histogram[i]++;
-        techstr++;
+        j++;
     }
     vector <string> histogramString;
     histogramString.resize(histogram.size());
