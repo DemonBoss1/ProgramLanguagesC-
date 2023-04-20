@@ -88,17 +88,18 @@ bool checkComment(char ch, bool& solidus, bool& star, bool& lineComent, bool& mu
 	}
 }
 
-void checkType(string& str, string& type, int line) {
-	if (str == "int" || str == "char" || str == "short" || str == "long" || str == "float" || str == "double") {
-		type = str;
-		cout << type << " " << line << endl;
+bool checkType(string str, string type) {
+	if (str == "int" || str == "char" || str == "short" || str == "long" || str == "float" || str == "double" || str == "bool") {
+		return true;
 	}
+	else return false;
+	
 }
-void advertisementType(char ch, string& str, string& type, int& line) {
+void advertisementType(char ch, string& str, string& type) {
 	switch (ch)
 	{
 	case '\n':
-		line++;
+		str = "";
 		break;
 	case ';': case ',': case ':': case '.': case '"': case '\'': case '!': case '@': case '#': case '$': case '%': 
 	case '\t': case '^': case '&': case '*': case '(': case ')': case '-': case '=': case '+': case '`': case '~':
@@ -107,7 +108,9 @@ void advertisementType(char ch, string& str, string& type, int& line) {
 		break;
 	case ' ':
 		if (type == "") {
-			checkType(str, type, line);
+			if (checkType(str, type))
+				type = str;
+
 		}
 		str = "";
 		break;
@@ -125,25 +128,52 @@ void tableVatiable(ifstream& fin) {
 	string str = "";
 	string type, name, value;
 	int line = 1;
+	bool afterComma = false;
 	while (!fin.eof())
 	{
 		ch = fin.get();
 		if (checkComment(ch, solidus, star, lineComent, multilineComment, line)) {
-			if (type == "")advertisementType(ch, str, type, line);
+			if (type == "")advertisementType(ch, str, type);
 			else {
 				switch (ch)
 				{
 				case '\n':
-					line++;
-					break;
-				case ';':
+					str = "";
 					type = "";
-				case ',': case ':': case '.': case '"': case '\'': case '!': case '@': case '#': case '$': case '%': case'\t':
-				case '^': case '&': case '*': case '(': case ')': case '-': case '=': case '+': case '`': case '~':
-				case '[': case ']': case '{': case '}': case '<': case '>': case '/': case '?': case '\\': case '|':
-
+					name = "";
+					break;
+				case ';': case ')': case ']': case '}':
+					name = str;
+					if(name!="") cout << type << " " << name << " " << line << endl;
+					name = "";
+					type = "";
+					str = "";
+					afterComma = false;
+					break;
+				case ',': 
+					name = str;
+					if (name != "") cout << type << " " << name << " " << line << endl;
+					afterComma = true;
+					name = "";
+					str = "";
+					break;
+				case ':': case '.': case '"': case '\'': case '!': case '@': case '#': case '$': case '%': 
+				case '\t': case '^': case '&': case '*': case '(': case '-': case '=': case '+': case '`': 
+				case '~': case '[': case '{': case '<': case '>': case '/': case '?': case '\\': case '|':
+					str = "";
+					type = "";
+					break;
 				case ' ':
-
+					if (afterComma)
+						if (checkType(str, type)) {
+							afterComma = false;
+							type = str;
+							str = "";
+							break;
+						}
+					name = str;
+					if (name != "") cout << type << " " << name << " " << line << endl;
+					break;
 				default:
 					str += ch;
 				}
