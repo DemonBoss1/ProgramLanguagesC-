@@ -130,6 +130,7 @@
     <ClCompile Include="Bracket.cpp" />
     <ClCompile Include="BracketOld.cpp" />
     <ClCompile Include="Histogram.cpp" />
+    <ClCompile Include="lab 3.cpp" />
     <ClCompile Include="ProgramLanguage.cpp" />
     <ClCompile Include="transferStack.cpp" />
   </ItemGroup>
