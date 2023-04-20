@@ -87,10 +87,33 @@ bool checkComment(char ch, bool& solidus, bool& star, bool& lineComent, bool& mu
 
 	}
 }
-void checkType(string str, string type) {
+
+void checkType(string& str, string& type, int line) {
 	if (str == "int" || str == "char" || str == "short" || str == "long" || str == "float" || str == "double") {
 		type = str;
-		cout << type << endl;
+		cout << type << " " << line << endl;
+	}
+}
+void advertisementType(char ch, string& str, string& type, int& line) {
+	switch (ch)
+	{
+	case '\n':
+		line++;
+		break;
+	case ';': case ',': case ':': case '.': case '"': case '\'': case '!': case '@': case '#': case '$': case '%': 
+	case '\t': case '^': case '&': case '*': case '(': case ')': case '-': case '=': case '+': case '`': case '~':
+	case '[': case ']': case '{': case '}': case '<': case '>': case '/': case '?': case '\\': case '|':
+		str = "";
+		break;
+	case ' ':
+		if (type == "") {
+			checkType(str, type, line);
+		}
+		str = "";
+		break;
+	default:
+		str += ch;
+
 	}
 }
 void tableVatiable(ifstream& fin) {
@@ -106,27 +129,24 @@ void tableVatiable(ifstream& fin) {
 	{
 		ch = fin.get();
 		if (checkComment(ch, solidus, star, lineComent, multilineComment, line)) {
-			switch (ch)
-			{
-			case '\n':
-				line++;
-				break;
-			case ';': 
-				type = "";
-			case ',':
+			if (type == "")advertisementType(ch, str, type, line);
+			else {
+				switch (ch)
+				{
+				case '\n':
+					line++;
+					break;
+				case ';':
+					type = "";
+				case ',': case ':': case '.': case '"': case '\'': case '!': case '@': case '#': case '$': case '%': case'\t':
+				case '^': case '&': case '*': case '(': case ')': case '-': case '=': case '+': case '`': case '~':
+				case '[': case ']': case '{': case '}': case '<': case '>': case '/': case '?': case '\\': case '|':
 
-			case ':': case '.': case '"': case '\'': case '!': case '@': case '#': case '$': case '%': case'\t':
-			case '^': case '&': case '*': case '(': case ')': case '-': case '=': case '+': case '`': case '~': 
-			case '[': case ']': case '{': case '}': case '<': case '>': case '/': case '?': case '\\': case '|':
-				str = "";
-				break;
-			case ' ':
-				if (type == "")	checkType(str, type);
-				str = "";
-				break;
-			default:
-				str += ch;
+				case ' ':
 
+				default:
+					str += ch;
+				}
 			}
 		}
 	}
