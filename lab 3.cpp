@@ -16,6 +16,10 @@ private:
 	vector<Variable> vars;
 	
 public:
+	TableLine(string type, string name) {
+		this->type = type;
+		setVariabls(name, "");
+	}
 	TableLine(string type, string name, string value) {
 		this->type = type;
 		setVariabls(name, value);
@@ -26,6 +30,33 @@ public:
 	}
 	void setVariabls(string name, string value) {
 		vars.push_back(Variable(name, value));
+	}
+	void setVariabls(string name) {
+		for (int i = 0; i < vars.size(); i++) {
+			if (vars[i].name == name) return;
+		}
+		vars.push_back(Variable(name, ""));
+	}
+	string getType() { return type; }
+};
+
+class TableVarible {
+private:
+	vector<TableLine> table;
+public:
+	void addVarToTable(string type, string name) {
+		for (int i = 0; i < table.size(); i++) {
+			if (table[i].getType() == type) {
+				table[i].setVariabls(name);
+				return;
+			}
+		}
+		table.push_back(TableLine(type, name));
+	}
+	void printTable() {
+		for (int i = 0; i < table.size(); i++) {
+			table[i].printVar();
+		}
 	}
 };
 
@@ -120,6 +151,7 @@ void advertisementType(char ch, string& str, string& type) {
 	}
 }
 void tableVatiable(ifstream& fin) {
+	TableVarible table;
 	char ch;
 	bool solidus = false;
 	bool star = false;
@@ -144,7 +176,10 @@ void tableVatiable(ifstream& fin) {
 					break;
 				case ';': case ')': case ']': case '}':
 					name = str;
-					if(name!="") cout << type << " " << name << " " << line << endl;
+					if (name != "") {
+						cout << type << " " << name << " " << line << endl;
+						table.addVarToTable(type, name);
+					}
 					name = "";
 					type = "";
 					str = "";
@@ -152,7 +187,10 @@ void tableVatiable(ifstream& fin) {
 					break;
 				case ',': 
 					name = str;
-					if (name != "") cout << type << " " << name << " " << line << endl;
+					if (name != "") {
+						cout << type << " " << name << " " << line << endl;
+						table.addVarToTable(type, name);
+					}
 					afterComma = true;
 					name = "";
 					str = "";
@@ -172,7 +210,10 @@ void tableVatiable(ifstream& fin) {
 							break;
 						}
 					name = str;
-					if (name != "") cout << type << " " << name << " " << line << endl;
+					if (name != "") {
+						cout << type << " " << name << " " << line << endl;
+						table.addVarToTable(type, name);
+					}
 					break;
 				default:
 					str += ch;
@@ -180,6 +221,7 @@ void tableVatiable(ifstream& fin) {
 			}
 		}
 	}
+	table.printTable();
 }
 void testEx3() {
 	ifstream fin;
