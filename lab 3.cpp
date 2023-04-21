@@ -59,65 +59,72 @@ public:
 		}
 	}
 };
+class Comment {
+private:
+	bool solidus = false;
+	bool star = false;
+	bool lineComent = false;
+	bool multilineComment = false;
+public:
+	bool checkComment(char ch, int& line) {
 
-bool checkComment(char ch, bool& solidus, bool& star, bool& lineComent, bool& multilineComment, int& line) {
+		if (!lineComent && !multilineComment) {
 
-	if (!lineComent && !multilineComment) {
-
-		switch (ch)
-		{
-		case '/':
-			if (solidus) {
-				solidus = false;
-				lineComent = true;
-				return false;
-			}
-			solidus = true;
-			break;
-		case '*':
-			if (solidus) {
-				star = true;
-				multilineComment = true;
-				return false;
-			}
-			break;
-		case '\n':
-			line++;
-			break;
-		default:
-			if (solidus)solidus = false;
-			break;
-		}
-		return true;
-	}
-	else {
-		if (lineComent) {
-			if (ch == '\n') {
-				lineComent = false;
-				line++;
-			}
-		}
-		else {
-			switch (ch) {
-			case '*':
-				star = false;
-				break;
+			switch (ch)
+			{
 			case '/':
-				if (!star) {
+				if (solidus) {
 					solidus = false;
-					multilineComment = false;
+					lineComent = true;
+					return false;
+				}
+				solidus = true;
+				break;
+			case '*':
+				if (solidus) {
+					star = true;
+					multilineComment = true;
+					return false;
 				}
 				break;
 			case '\n':
 				line++;
 				break;
 			default:
-				star = true;
+				if (solidus)solidus = false;
+				break;
 			}
+			return true;
 		}
+		else {
+			if (lineComent) {
+				if (ch == '\n') {
+					lineComent = false;
+					line++;
+				}
+			}
+			else {
+				switch (ch) {
+				case '*':
+					star = false;
+					break;
+				case '/':
+					if (!star) {
+						solidus = false;
+						multilineComment = false;
+					}
+					break;
+				case '\n':
+					line++;
+					break;
+				default:
+					star = true;
+				}
+			}
 
+		}
 	}
-}
+};
 
 bool checkType(string str, string type) {
 	if (str == "int" || str == "char" || str == "short" || str == "long" || str == "float" || str == "double" || str == "bool") {
@@ -152,11 +159,8 @@ void advertisementType(char ch, string& str, string& type) {
 }
 void tableVatiable(ifstream& fin) {
 	TableVarible table;
+	Comment comment;
 	char ch;
-	bool solidus = false;
-	bool star = false;
-	bool lineComent = false;
-	bool multilineComment = false;
 	string str = "";
 	string type, name, value;
 	int line = 1;
@@ -164,7 +168,7 @@ void tableVatiable(ifstream& fin) {
 	while (!fin.eof())
 	{
 		ch = fin.get();
-		if (checkComment(ch, solidus, star, lineComent, multilineComment, line)) {
+		if (comment.checkComment(ch, line)) {
 			if (type == "")advertisementType(ch, str, type);
 			else {
 				switch (ch)
