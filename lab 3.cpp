@@ -107,54 +107,22 @@ public:
 	string getType() { return type; }
 };
 
-bool checkType(string str, string type) {
-	if (str == "int" || str == "char" || str == "short" || str == "long" || str == "float" || str == "double" || str == "bool") {
-		return true;
-	}
-	else return false;
-
-}
-void advertisementType(char ch, string& str, string& type) {
-	switch (ch)
-	{
-	case '\n':
-		str = "";
-		break;
-	case ';': case ',': case ':': case '.': case '"': case '\'': case '!': case '@': case '#': case '$': case '%':
-	case '\t': case '^': case '&': case '*': case '(': case ')': case '-': case '=': case '+': case '`': case '~':
-	case '[': case ']': case '{': case '}': case '<': case '>': case '/': case '?': case '\\': case '|':
-		str = "";
-		break;
-	case ' ':
-		if (type == "") {
-			if (checkType(str, type))
-				type = str;
-
-		}
-		str = "";
-		break;
-	default:
-		str += ch;
-
-	}
-}
-
 class TableVarible {
 private:
 	vector<TableLine> table;
+	string type, name, value;
+	string str = "";
+	int line = 1;
+	bool afterComma = false;
 public:
 	TableVarible(ifstream& fin) {
 		Comment comment;
 		char ch;
-		string str = "";
-		string type, name, value;
-		int line = 1;
-		bool afterComma = false;
 		while (!fin.eof())
 		{
 			ch = fin.get();
 			if (comment.checkComment(ch, line)) {
-				if (type == "")advertisementType(ch, str, type);
+				if (type == "")advertisementType(ch);
 				else {
 					switch (ch)
 					{
@@ -192,7 +160,7 @@ public:
 						break;
 					case ' ':
 						if (afterComma)
-							if (checkType(str, type)) {
+							if (checkType()) {
 								afterComma = false;
 								type = str;
 								str = "";
@@ -212,6 +180,38 @@ public:
 		}
 		this->printTable();
 	}
+	bool checkType() {
+		if (str == "int" || str == "char" || str == "short" || str == "long" || str == "float" || str == "double" || str == "bool") {
+			return true;
+		}
+		else return false;
+
+	}
+	void advertisementType(char ch) {
+		switch (ch)
+		{
+		case '\n':
+			str = "";
+			break;
+		case ';': case ',': case ':': case '.': case '"': case '\'': case '!': case '@': case '#': case '$': case '%':
+		case '\t': case '^': case '&': case '*': case '(': case ')': case '-': case '=': case '+': case '`': case '~':
+		case '[': case ']': case '{': case '}': case '<': case '>': case '/': case '?': case '\\': case '|':
+			str = "";
+			break;
+		case ' ':
+			if (type == "") {
+				if (checkType())
+					type = str;
+
+			}
+			str = "";
+			break;
+		default:
+			str += ch;
+
+		}
+	}
+
 	void addVarToTable(string type, string name) {
 		for (int i = 0; i < table.size(); i++) {
 			if (table[i].getType() == type) {
