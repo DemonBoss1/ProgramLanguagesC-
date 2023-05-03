@@ -131,44 +131,7 @@ public:
 			if (comment.checkComment(ch, line)) {
 				if (type == "")advertisementType(ch);
 				else if (name == "")checkName(ch);
-				else {
-					switch (ch)
-					{
-					case '=':
-						isEqually = true;
-						break;
-					case '\n': case ';': case ')': case ']': case '}':	case ':': case '!': case '@': case '#': 
-					case '\t': case '^': case '&': case '*': case '(': case '+': case '`': case '$': case '%':
-					case '~': case '[': case '{': case '<': case '>': case '/': case '?': case '\\': case '|': 
-						if (isEqually) {
-							value = str;
-							this->addVarToTable(type, name, value);
-							cout << type << " " << name << " " << value << " " << line << endl;
-						}
-						type = name = value = "";
-						break;
-					case '"': case '\'':
-						if (isEqually) {
-							if (str[0] == ch) {
-								str += ch;
-								value = str;
-								this->addVarToTable(type, name, value);
-								cout << type << " " << name << " " << value << " " << line << endl;
-								type = name = value = "";
-							}
-
-							else if (str == "")str += ch;
-							else cout << "Error " << line;
-						}
-						break;
-					case ' ':
-						if (isEqually) if (str[0] == '"' || str[0] == '\'') str += ch;
-						break;
-					case ',': case '.': case '-':
-					default:
-						if (isEqually) str += ch;
-					}
-				}
+				else checkValue(ch);
 			}
 		}
 		this->printTable();
@@ -267,6 +230,44 @@ public:
 			break;
 		default:
 			str += ch;
+		}
+	}
+	void checkValue(char ch) {
+		switch (ch)
+		{
+		case '=':
+			isEqually = true;
+			break;
+		case '\n': case ';': case ')': case ']': case '}':	case ':': case '!': case '@': case '#':
+		case '\t': case '^': case '&': case '*': case '(': case '+': case '`': case '$': case '%':
+		case '~': case '[': case '{': case '<': case '>': case '/': case '?': case '\\': case '|':
+			if (isEqually) {
+				value = str;
+				this->addVarToTable(type, name, value);
+				cout << type << " " << name << " " << value << " " << line << endl;
+			}
+			type = name = value = "";
+			break;
+		case '"': case '\'':
+			if (isEqually) {
+				if (str[0] == ch) {
+					str += ch;
+					value = str;
+					this->addVarToTable(type, name, value);
+					cout << type << " " << name << " " << value << " " << line << endl;
+					type = name = value = "";
+				}
+
+				else if (str == "")str += ch;
+				else cout << "Error " << line;
+			}
+			break;
+		case ' ':
+			if (isEqually) if (str[0] == '"' || str[0] == '\'') str += ch;
+			break;
+		case ',': case '.': case '-':
+		default:
+			if (isEqually) str += ch;
 		}
 	}
 
