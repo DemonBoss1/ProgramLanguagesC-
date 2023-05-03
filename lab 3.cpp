@@ -111,6 +111,10 @@ public:
 		vars.push_back(Variable(name, ""));
 	}
 	string getType() { return type; }
+	Variable* searchVarible(string name) {
+		for (int i = 0; i < vars.size(); i++)
+			if (vars[i].name == name) return &vars[i];
+	}
 };
 
 class TableVarible {
