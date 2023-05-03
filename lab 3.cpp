@@ -96,6 +96,12 @@ public:
 			cout << type << " " << vars[i].name << " = " << vars[i].value << endl;
 	}
 	void setVariabls(string name, string value) {
+		for (int i = 0; i < vars.size(); i++) {
+			if (vars[i].name == name) {
+				vars[i].value = value;
+				return;
+			}
+		}
 		vars.push_back(Variable(name, value));
 	}
 	void setVariabls(string name) {
@@ -114,6 +120,7 @@ private:
 	string str = "";
 	int line = 1;
 	bool afterComma = false;
+	bool isEqually = false;
 public:
 	TableVarible(ifstream& fin) {
 		Comment comment;
@@ -123,57 +130,43 @@ public:
 			ch = fin.get();
 			if (comment.checkComment(ch, line)) {
 				if (type == "")advertisementType(ch);
+				else if (name == "")checkName(ch);
 				else {
 					switch (ch)
 					{
-					case '\n':
-						str = "";
-						type = "";
-						name = "";
+					case '=':
+						isEqually = true;
 						break;
-					case ';': case ')': case ']': case '}':
-						name = str;
-						if (name != "") {
-							cout << type << " " << name << " " << line << endl;
-							this->addVarToTable(type, name);
+					case '\n': case ';': case ')': case ']': case '}':	case ':': case '!': case '@': case '#': 
+					case '\t': case '^': case '&': case '*': case '(': case '+': case '`': case '$': case '%':
+					case '~': case '[': case '{': case '<': case '>': case '/': case '?': case '\\': case '|': 
+						if (isEqually) {
+							value = str;
+							this->addVarToTable(type, name, value);
+							cout << type << " " << name << " " << value << " " << line << endl;
 						}
-						name = "";
-						type = "";
-						str = "";
-						afterComma = false;
+						type = name = value = "";
 						break;
-					case ',':
-						name = str;
-						if (name != "") {
-							cout << type << " " << name << " " << line << endl;
-							this->addVarToTable(type, name);
+					case '"': case '\'':
+						if (isEqually) {
+							if (str[0] == ch) {
+								str += ch;
+								value = str;
+								this->addVarToTable(type, name, value);
+								cout << type << " " << name << " " << value << " " << line << endl;
+								type = name = value = "";
+							}
+
+							else if (str == "")str += ch;
+							else cout << "Error " << line;
 						}
-						afterComma = true;
-						name = "";
-						str = "";
-						break;
-					case ':': case '.': case '"': case '\'': case '!': case '@': case '#': case '$': case '%':
-					case '\t': case '^': case '&': case '*': case '(': case '-': case '=': case '+': case '`':
-					case '~': case '[': case '{': case '<': case '>': case '/': case '?': case '\\': case '|':
-						str = "";
-						type = "";
 						break;
 					case ' ':
-						if (afterComma)
-							if (checkType()) {
-								afterComma = false;
-								type = str;
-								str = "";
-								break;
-							}
-						name = str;
-						if (name != "") {
-							cout << type << " " << name << " " << line << endl;
-							this->addVarToTable(type, name);
-						}
+						if (isEqually) if (str[0] == '"' || str[0] == '\'') str += ch;
 						break;
+					case ',': case '.': case '-':
 					default:
-						str += ch;
+						if (isEqually) str += ch;
 					}
 				}
 			}
@@ -211,11 +204,85 @@ public:
 
 		}
 	}
+	void checkName(char ch) {
+		switch (ch)
+		{
+		case '\n':
+			str = "";
+			type = "";
+			name = "";
+			break;
+		case ';': case ')': case ']': case '}':
+			name = str;
+			if (name != "") {
+				cout << type << " " << name << " " << line << endl;
+				this->addVarToTable(type, name);
+				str = "";
+			}
+			name = "";
+			type = "";
+			str = "";
+			afterComma = false;
+			break;
+		case ',':
+			name = str;
+			if (name != "") {
+				cout << type << " " << name << " " << line << endl;
+				this->addVarToTable(type, name);
+				str = "";
+			}
+			afterComma = true;
+			name = "";
+			str = "";
+			break;
+		case '=':
+			isEqually = true;
+			name = str;
+			if (name != "") {
+				cout << type << " " << name << " " << line << endl;
+				this->addVarToTable(type, name);
+				str = "";
+			}
+			break;
+		case ':': case '.': case '"': case '\'': case '!': case '@': case '#': case '$': case '%':
+		case '\t': case '^': case '&': case '*': case '(': case '-': case '+': case '`':
+		case '~': case '[': case '{': case '<': case '>': case '/': case '?': case '\\': case '|':
+			str = "";
+			type = "";
+			break;
+		case ' ':
+			if (afterComma)
+				if (checkType()) {
+					afterComma = false;
+					type = str;
+					str = "";
+					break;
+				}
+			name = str;
+			if (name != "") {
+				cout << type << " " << name << " " << line << endl;
+				this->addVarToTable(type, name);
+				str = "";
+			}
+			break;
+		default:
+			str += ch;
+		}
+	}
 
 	void addVarToTable(string type, string name) {
 		for (int i = 0; i < table.size(); i++) {
 			if (table[i].getType() == type) {
 				table[i].setVariabls(name);
+				return;
+			}
+		}
+		table.push_back(TableLine(type, name));
+	}
+	void addVarToTable(string type, string name, string value) {
+		for (int i = 0; i < table.size(); i++) {
+			if (table[i].getType() == type) {
+				table[i].setVariabls(name, value);
 				return;
 			}
 		}
