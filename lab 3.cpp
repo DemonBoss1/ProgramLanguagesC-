@@ -111,10 +111,10 @@ public:
 		vars.push_back(Variable(name, ""));
 	}
 	string getType() { return type; }
-	Variable* searchVarible(string name) {
+	bool searchVarible(string name) {
 		for (int i = 0; i < vars.size(); i++)
-			if (vars[i].name == name) return &vars[i];
-		return 0;
+			if (vars[i].name == name) return true;
+		return false;
 	}
 };
 
@@ -155,7 +155,7 @@ public:
 			str = "";
 			break;
 		case ';': case ',': case ':': case '.': case '"': case '\'': case '!': case '@': case '#': case '$': case '%':
-		case '\t': case '^': case '&': case '*': case '(': case ')': case '-': case '=': case '+': case '`': case '~':
+		case '\t': case '^': case '&': case '*': case '(': case ')': case '-': case '+': case '`': case '~':
 		case '[': case ']': case '{': case '}': case '<': case '>': case '/': case '?': case '\\': case '|':
 			str = "";
 			break;
@@ -164,6 +164,10 @@ public:
 				if (checkType())
 					type = str;
 
+			}
+		case '=':
+			if (searchVarible(str)) {
+				name = str;
 			}
 			str = "";
 			break;
@@ -241,15 +245,20 @@ public:
 		switch (ch)
 		{
 		case '=':
+			if (isEqually) {
+				isEqually = false;
+				break;
+			}
 			isEqually = true;
 			break;
-		case '\n': case ';': case ')': case ']': case '}':	case ':': case '!': case '@': case '#':
-		case '\t': case '^': case '&': case '*': case '(': case '+': case '`': case '$': case '%':
-		case '~': case '[': case '{': case '<': case '>': case '/': case '?': case '\\': case '|':
+		case '\n': case ';': case '}':	case ':': case '!': case '@': case '#':
+		case '\t': case '^': case '&': case '*': case '+': case '`': case '$': case '%':
+		case '~': case '{': case '<': case '>': case '/': case '?': case '\\': case '|':
 			if (isEqually) {
 				value = str;
 				this->addVarToTable(type, name, value);
 				cout << type << " " << name << " " << value << " " << line << endl;
+				isEqually = false;
 			}
 			type = name = value = "";
 			break;
@@ -261,6 +270,7 @@ public:
 					this->addVarToTable(type, name, value);
 					cout << type << " " << name << " " << value << " " << line << endl;
 					type = name = value = "";
+					isEqually = false;
 				}
 
 				else if (str == "")str += ch;
@@ -270,7 +280,7 @@ public:
 		case ' ':
 			if (isEqually) if (str[0] == '"' || str[0] == '\'') str += ch;
 			break;
-		case ',': case '.': case '-':
+		case ',': case '.': case '-': case '(': case ')': case '[': case ']':
 		default:
 			if (isEqually) str += ch;
 		}
@@ -299,10 +309,13 @@ public:
 			table[i].printVar();
 		}
 	}
-	Variable* searchVarible(string name) {
+	bool searchVarible(string name) {
 		for (int i = 0; i < table.size(); i++)
-			if (table[i].searchVarible(name))
-				return table[i].searchVarible(name);
+			if (table[i].searchVarible(name)) {
+				type = table[i].getType();
+				return true;
+			}
+		return false;
 	}
 };
 
