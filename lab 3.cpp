@@ -114,6 +114,7 @@ public:
 	Variable* searchVarible(string name) {
 		for (int i = 0; i < vars.size(); i++)
 			if (vars[i].name == name) return &vars[i];
+		return 0;
 	}
 };
 
@@ -297,6 +298,11 @@ public:
 		for (int i = 0; i < table.size(); i++) {
 			table[i].printVar();
 		}
+	}
+	Variable* searchVarible(string name) {
+		for (int i = 0; i < table.size(); i++)
+			if (table[i].searchVarible(name))
+				return table[i].searchVarible(name);
 	}
 };
 
