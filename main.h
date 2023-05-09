@@ -13,7 +13,7 @@
 using namespace std;
 
 namespace Old {
-	void bracketTest(ifstream& fin);
+	bool bracketTest(ifstream& fin);
 	void easyBracketTest(ifstream& fin);
 }
 

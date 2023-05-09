@@ -324,4 +324,5 @@ void testEx3() {
 	ifstream fin;
 	fin.open("Test.txt");
 	TableVarible tableVariable(fin);
+	fin.close();
 }

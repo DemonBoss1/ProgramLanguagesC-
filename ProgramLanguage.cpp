@@ -6,5 +6,8 @@ void testEx3();
 
 int main()
 {
-	testEx3();
+	ifstream fin;
+	cout << Old::bracketTest(fin) << endl;
+	fin.close();
+	//testEx3();
 }

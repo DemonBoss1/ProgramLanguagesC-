@@ -10,14 +10,16 @@ namespace Old{
 		std::cout << "Error: The opening parenthesis '" << c << "'. Position of the closing parenthesis: " << i << " line" << endl;
 		countErrorNoOpenBracket++;
 	}
-	void caseCloseBracket(map<char, int>& bracketCount, vector<char>& lastOpenBracket, int i, char c) {
+	void caseCloseBracket(map<char, int>& bracketCount, vector<char>& lastOpenBracket, int i, char c, bool& bracketNoError) {
 		map<char, int>::iterator it;
 		it = bracketCount.find(c);
 		if (it->second == 0) {
 			ErrorNoOpenBracket(i, c);
+			bracketNoError = false;
 		}
 		else if (lastOpenBracket.empty()) {
 			ErrorNoOpenBracket(i, c);
+			bracketNoError = false;
 		}
 		else while (find(lastOpenBracket.begin(), lastOpenBracket.end(), c) != lastOpenBracket.end()) {
 			if (lastOpenBracket[0] == it->first) {
@@ -31,15 +33,16 @@ namespace Old{
 				bracketCount.find(lastOpenBracket[0])->second--;
 				countErrorNoCloseBracket++;
 				lastOpenBracket.erase(lastOpenBracket.begin());
+				bracketNoError = false;
 			}
 		}
 	}
-	void bracketTest(ifstream& fin) {
+	bool bracketTest(ifstream& fin) {
+		bool bracketNoError = true;
 		map<char, int> bracketCount;
 		bracketCount.insert(map<char, int>::value_type('(', 0));
 		bracketCount.insert(map<char, int>::value_type('[', 0));
 		bracketCount.insert(map<char, int>::value_type('{', 0));
-		bracketCount.insert(map<char, int>::value_type('<', 0));
 		int i = 0;
 		map<char, int>::iterator it;
 		vector <char> lastOpenBracket;
@@ -63,20 +66,16 @@ namespace Old{
 				{
 				case ')':
 					if (solidus)solidus = false;
-					caseCloseBracket(bracketCount, lastOpenBracket, line, '(');
+					caseCloseBracket(bracketCount, lastOpenBracket, line, '(', bracketNoError);
 					break;
 				case ']':
 					if (solidus)solidus = false;
-					caseCloseBracket(bracketCount, lastOpenBracket, line, '[');
+					caseCloseBracket(bracketCount, lastOpenBracket, line, '[', bracketNoError);
 					break;
 				case '}':
 					it = bracketCount.find('{');
 					if (solidus)solidus = false;
-					caseCloseBracket(bracketCount, lastOpenBracket, line, '{');
-					break;
-				case '>':
-					if (solidus)solidus = false;
-					caseCloseBracket(bracketCount, lastOpenBracket, line, '<');
+					caseCloseBracket(bracketCount, lastOpenBracket, line, '{', bracketNoError);
 					break;
 				case '/':
 					if (solidus) {
@@ -133,6 +132,7 @@ namespace Old{
 		}
 		std::cout << "No open bracket: " << countErrorNoOpenBracket << endl;
 		std::cout << "No close bracket: " << countErrorNoCloseBracket << endl;
+		return bracketNoError;
 	}
 	void easyBracketTest(ifstream& fin) {
 		stack<char> lastOpens;
