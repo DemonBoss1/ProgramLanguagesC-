@@ -1,7 +1,8 @@
 #include "main.h"
+#include "Comment.h"
 
 class PolishWrite {
-	bool secondVarWrite = false;
+	Comment comment;
 	string finishWhite;
 	map<char, int> operationPriority;
 	list <string> partMath;
@@ -24,7 +25,9 @@ public:
 		while (!fin.eof())
 		{
 			ch = fin.get();
-			writeVar(ch);
+			if (comment.checkComment(ch)) {
+				writeVar(ch);
+			}
 		}
 	}
 	 

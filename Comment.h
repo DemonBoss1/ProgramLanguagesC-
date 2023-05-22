@@ -65,4 +65,8 @@ public:
 
 		}
 	}
+	bool checkComment(char ch) {
+		int line = 1;
+		return checkComment(ch, line);
+	}
 };
