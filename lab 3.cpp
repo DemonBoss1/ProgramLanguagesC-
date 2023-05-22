@@ -1,71 +1,5 @@
 #include "main.h"
-
-class Comment {
-private:
-	bool solidus = false;
-	bool star = false;
-	bool lineComent = false;
-	bool multilineComment = false;
-public:
-	bool checkComment(char ch, int& line) {
-
-		if (!lineComent && !multilineComment) {
-
-			switch (ch)
-			{
-			case '/':
-				if (solidus) {
-					solidus = false;
-					lineComent = true;
-					return false;
-				}
-				solidus = true;
-				break;
-			case '*':
-				if (solidus) {
-					star = true;
-					multilineComment = true;
-					return false;
-				}
-				break;
-			case '\n':
-				line++;
-				break;
-			default:
-				if (solidus)solidus = false;
-				break;
-			}
-			return true;
-		}
-		else {
-			if (lineComent) {
-				if (ch == '\n') {
-					lineComent = false;
-					line++;
-				}
-			}
-			else {
-				switch (ch) {
-				case '*':
-					star = false;
-					break;
-				case '/':
-					if (!star) {
-						solidus = false;
-						multilineComment = false;
-					}
-					break;
-				case '\n':
-					line++;
-					break;
-				default:
-					star = true;
-				}
-			}
-
-		}
-	}
-};
+#include "Comment.h"
 
 class Variable {
 public:
@@ -126,6 +60,7 @@ private:
 	int line = 1;
 	bool afterComma = false;
 	bool isEqually = false;
+	bool isString = false;
 public:
 	TableVarible(ifstream& fin) {
 		Comment comment;
@@ -139,10 +74,11 @@ public:
 				else checkValue(ch);
 			}
 		}
+		cout << endl;
 		this->printTable();
 	}
 	bool checkType() {
-		if (str == "int" || str == "char" || str == "short" || str == "long" || str == "float" || str == "double" || str == "bool") {
+		if (str == "int" || str == "char" || str == "short" || str == "long" || str == "float" || str == "double" || str == "bool" || str =="string") {
 			return true;
 		}
 		else return false;
@@ -168,6 +104,7 @@ public:
 		case '=':
 			if (searchVarible(str)) {
 				name = str;
+				isEqually = true;
 			}
 			str = "";
 			break;
@@ -246,6 +183,10 @@ public:
 		{
 		case '=':
 			if (isEqually) {
+				if (isString) {
+					str += ch;
+					break;
+				}
 				isEqually = false;
 				break;
 			}
@@ -255,13 +196,30 @@ public:
 		case '\t': case '^': case '&': case '*': case '+': case '`': case '$': case '%':
 		case '~': case '{': case '<': case '>': case '/': case '?': case '\\': case '|':
 			if (isEqually) {
+				if (isString) {
+					str += ch;
+					break;
+				}
 				value = str;
 				this->addVarToTable(type, name, value);
 				cout << type << " " << name << " " << value << " " << line << endl;
 				isEqually = false;
 			}
-			type = name = value = "";
+			str = type = name = value = "";
 			break;
+		case ',':
+			if (isEqually) {
+				if (isString) {
+					str += ch;
+					break;
+				}
+				value = str;
+				this->addVarToTable(type, name, value);
+				cout << type << " " << name << " " << value << " " << line << endl;
+				isEqually = false;
+				afterComma = true;
+			}
+			name = value = str = "";
 		case '"': case '\'':
 			if (isEqually) {
 				if (str[0] == ch) {
@@ -269,18 +227,22 @@ public:
 					value = str;
 					this->addVarToTable(type, name, value);
 					cout << type << " " << name << " " << value << " " << line << endl;
-					type = name = value = "";
+					str = type = name = value = "";
 					isEqually = false;
+					isString = false;
 				}
 
-				else if (str == "")str += ch;
+				else if (str == "") {
+					str += ch;
+					isString = true;
+				}
 				else cout << "Error " << line;
 			}
 			break;
 		case ' ':
 			if (isEqually) if (str[0] == '"' || str[0] == '\'') str += ch;
 			break;
-		case ',': case '.': case '-': case '(': case ')': case '[': case ']':
+		case '.': case '-': case '(': case ')': case '[': case ']':
 		default:
 			if (isEqually) str += ch;
 		}

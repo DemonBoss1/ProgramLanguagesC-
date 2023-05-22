@@ -9,11 +9,13 @@
 #include <stack>
 #include <Windows.h>
 #include <string>
+#include <list>
 
 using namespace std;
 
 namespace Old {
 	bool bracketTest(ifstream& fin);
+	bool bracketTest(string filemane);
 	void easyBracketTest(ifstream& fin);
 }
 

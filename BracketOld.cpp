@@ -37,6 +37,11 @@ namespace Old{
 			}
 		}
 	}
+	bool bracketTest(string filename) {
+		ifstream fin;
+		fin.open(filename);
+		return bracketTest(fin);
+	}
 	bool bracketTest(ifstream& fin) {
 		bool bracketNoError = true;
 		map<char, int> bracketCount;
@@ -51,6 +56,8 @@ namespace Old{
 		bool star = false;
 		bool lineComent = false;
 		bool multilineComment = false;
+		bool isDoubleQuotes = false;
+		bool isApostrophe = false;
 		int line = 1;
 		while (!fin.eof())
 		{
@@ -64,20 +71,39 @@ namespace Old{
 				}
 				switch (ch)
 				{
+				case '"':
+					if (isDoubleQuotes) {
+						isDoubleQuotes = false;
+						break;
+					}
+					isDoubleQuotes = true;
+					break;
+				case '\'':
+					if (isDoubleQuotes) break;
+					if (isApostrophe) {
+						isApostrophe = false;
+						break;
+					}
+					isApostrophe = true;
+					break;
 				case ')':
+					if (isDoubleQuotes) break;
 					if (solidus)solidus = false;
 					caseCloseBracket(bracketCount, lastOpenBracket, line, '(', bracketNoError);
 					break;
 				case ']':
+					if (isDoubleQuotes) break;
 					if (solidus)solidus = false;
 					caseCloseBracket(bracketCount, lastOpenBracket, line, '[', bracketNoError);
 					break;
 				case '}':
+					if (isDoubleQuotes) break;
 					it = bracketCount.find('{');
 					if (solidus)solidus = false;
 					caseCloseBracket(bracketCount, lastOpenBracket, line, '{', bracketNoError);
 					break;
 				case '/':
+					if (isDoubleQuotes) break;
 					if (solidus) {
 						solidus = false;
 						lineComent = true;
@@ -85,15 +111,18 @@ namespace Old{
 					solidus = true;
 					break;
 				case '*':
+					if (isDoubleQuotes) break;
 					if (solidus) {
 						star = true;
 						multilineComment = true;
 					}
 					break;
 				case '\n':
+					if (isDoubleQuotes) break;
 					line++;
 					break;
 				default:
+					if (isDoubleQuotes) break;
 					if (solidus)solidus = false;
 					break;
 				}
@@ -132,6 +161,7 @@ namespace Old{
 		}
 		std::cout << "No open bracket: " << countErrorNoOpenBracket << endl;
 		std::cout << "No close bracket: " << countErrorNoCloseBracket << endl;
+		fin.seekg(0);
 		return bracketNoError;
 	}
 	void easyBracketTest(ifstream& fin) {
