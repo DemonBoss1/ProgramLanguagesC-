@@ -17,6 +17,7 @@ public:
 		operationPriority.insert(map<char, int>::value_type('/', 1));
 		operationPriority.insert(map<char, int>::value_type('^', 2));
 		str = "";
+		number = ' ';
 	}
 	vector <int> variable;
 	void transformation(ifstream& fin) {
@@ -29,6 +30,19 @@ public:
 				writeVar(ch);
 			}
 		}
+		while (!sings.empty()) {
+			if ((operationPriority.find(*(sings.begin()))->second) >= (operationPriority.find(*(sings.begin()++))->second)) {
+				list <string>::iterator it = partMath.begin();
+				it++;
+				str = (*partMath.begin());
+				str += *(it);
+				str += *(sings.begin());
+				*partMath.begin() = str;
+				partMath.erase(it);
+				sings.erase(sings.begin());
+			}	
+		}
+		cout << *partMath.begin() << endl;
 	}
 	 
 	void writeVar(char ch) {
@@ -42,13 +56,15 @@ public:
 			else number = ch;
 			break;
 		case '+': case '-': case '*': case '/': case '^':
+			sings.push_back(ch);
+		case '=': case -1:
 			if (str != "") partMath.push_back(str);
 			else {
 				str = number;
 				partMath.push_back(str);
 			}
 			str = "";
-			sings.push_back(ch);
+			number = ' ';
 			break;
 		default:
 			cout << "ERROR!!!!" << endl;
