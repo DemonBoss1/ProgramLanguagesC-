@@ -31,16 +31,7 @@ public:
 			}
 		}
 		while (!sings.empty()) {
-			if ((operationPriority.find(*(sings.begin()))->second) >= (operationPriority.find(*(sings.begin()++))->second)) {
-				list <string>::iterator it = partMath.begin();
-				it++;
-				str = (*partMath.begin());
-				str += *(it);
-				str += *(sings.begin());
-				*partMath.begin() = str;
-				partMath.erase(it);
-				sings.erase(sings.begin());
-			}	
+			composingAnEquation(sings.begin(), partMath.begin());
 		}
 		cout << *partMath.begin() << endl;
 	}
@@ -74,6 +65,21 @@ public:
 	void print() {
 		for (list <string>::iterator it = partMath.begin(); it != partMath.end(); it++)
 			cout << it->data() << endl;
+	}
+	void composingAnEquation(list<char>::iterator sing, list<string>::iterator pMath) {
+		list<char>::iterator s_it = sing;
+		s_it++;
+		if (s_it == sings.end())s_it = sing;
+		list<string> ::iterator pm_it = pMath;
+		pm_it++;
+		if ((operationPriority.find(*(sing))->second) >= (operationPriority.find(*(s_it))->second)) {
+			str = (*pMath);
+			str += *(pm_it);
+			str += *(sing);
+			*pMath = str;
+			partMath.erase(pm_it);
+			sings.erase(sing);
+		}
 	}
 };
 
