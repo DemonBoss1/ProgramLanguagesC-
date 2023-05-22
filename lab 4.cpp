@@ -80,6 +80,7 @@ public:
 			partMath.erase(pm_it);
 			sings.erase(sing);
 		}
+		else composingAnEquation(s_it, pm_it);
 	}
 };
 
