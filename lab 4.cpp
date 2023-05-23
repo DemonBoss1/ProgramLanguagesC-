@@ -11,6 +11,8 @@ class PolishWrite {
 	string str;
 	bool closeBracket = false;
 	string result;
+	bool isIndex = false;
+	bool isDecided = false;
 public:
 	vector <string> variables;
 	PolishWrite() {
@@ -37,15 +39,14 @@ public:
 			composingAnEquation(sings.begin(), partMath.begin());
 		}
 		finishWhite = *partMath.begin();
-		cout << finishWhite << endl << endl;
-		for (int i = 0; i < variables.size(); i++) cout << "A[" << i << "] = " << variables[i] << endl;
-		cout << endl;
+		cout << finishWhite << endl;
+		print();
 	}
 	 
 	void writeVar(char ch, ifstream& fin) {
 		switch (ch)
 		{
-		case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':
+		case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9': case '.':
 			if (number != ' ') {
 				if (str == "")str += number;
 				str += ch;
@@ -100,8 +101,9 @@ public:
 		}
 	}
 	void print() {
-		for (list <string>::iterator it = partMath.begin(); it != partMath.end(); it++)
-			cout << it->data() << endl;
+		cout << endl;
+		for (int i = 0; i < variables.size(); i++) cout << "A[" << i << "] = " << variables[i] << endl;
+		cout << endl;
 	}
 	void composingAnEquation(list<char>::iterator sing, list<string>::iterator pMath) {
 		list<char>::iterator s_it = sing;
@@ -129,7 +131,117 @@ public:
 	string getFinishWhite() { return finishWhite; }
 	vector <string> getVariables() { return variables; }
 	void solution(string type) {
-
+		while (!isDecided) {
+			solutionPart(type);
+		}
+		print();
+	}
+	void solutionPart(string type) {
+		char sing = ' ';
+		string num1 = "", num2 = "";
+		string index = "";
+		for (int i = 0; i <= finishWhite.size(); i++) {
+			if (finishWhite[i] == '+' || finishWhite[i] == '-' || finishWhite[i] == '*' || finishWhite[i] == '/' || finishWhite[i] == '^') {
+				sing = finishWhite[i];
+				for (int j = i - 1; j >= 0; j--) {
+					switch (finishWhite[j])
+					{
+					case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9': case '.':
+						if (!isIndex) {
+							if (num2 == "")
+								if (num1 == "")num1 = finishWhite[j];
+								else {
+									num2 = finishWhite[j];
+									finishWhite.erase(j, i - j + 1);
+									calculation(type, sing, num1, num2, j);
+									cout << finishWhite << endl;
+									return;
+								}
+							else cout << "Error var" << endl;
+						}
+						else {
+							index += finishWhite[j];
+						}
+						break;
+					case ']':
+						isIndex = true;
+						break;
+					case '[':
+						isIndex = false;
+						break;
+					case 'A':
+						if (num2 == "")
+							if (num1 == "") {
+								num1 = variables[stoi(index)];
+								index = "";
+							}
+							else {
+								num2 = variables[stoi(index)];
+								finishWhite.erase(j, i - j + 1);
+								calculation(type, sing, num1, num2, j);
+								cout << finishWhite << endl;
+								return;
+							}
+						else cout << "Error var" << endl;
+					default:
+						break;
+					}
+				}
+			}
+			if (i == finishWhite.size()) {
+				isDecided = true;
+				return;
+			}
+		}
+	}
+	void calculation(string type, char sing, string& num1, string& num2, int j) {
+		if (type == "int") {
+			if (sing == '+') {
+				num1 = to_string(stoi(num1) + stoi(num2));
+				if (num1.size() > 1) {
+					variables.push_back(num1);
+					str = "A[";
+					str += to_string(variables.size() - 1);
+					str += ']';
+					finishWhite.insert(j, str);
+				}
+				else finishWhite.insert(j, num1);
+				
+			}
+			else if (sing == '-') {
+				num1 = to_string(stoi(num2) - stoi(num1));
+				if (num1.size() > 1) {
+					variables.push_back(num1);
+					str = "A[";
+					str += to_string(variables.size() - 1);
+					str += ']';
+					finishWhite.insert(j, str);
+				}
+				else finishWhite.insert(j, num1);
+			}
+			else if (sing == '*') {
+				num1 = to_string(stoi(num1) * stoi(num2));
+				if (num1.size() > 1) {
+					variables.push_back(num1);
+					str = "A[";
+					str += to_string(variables.size() - 1);
+					str += ']';
+					finishWhite.insert(j, str);
+				}
+				else finishWhite.insert(j, num1);
+			}
+			else if (sing == '/') {
+				num1 = to_string(stoi(num2) / stoi(num1));
+				if (num1.size() > 1) {
+					variables.push_back(num1);
+					str = "A[";
+					str += to_string(variables.size() - 1);
+					str += ']';
+					finishWhite.insert(j, str);
+				}
+				else finishWhite.insert(j, num1);
+			}
+		}
 	}
 };
 
@@ -140,6 +252,7 @@ void testEx4() {
 	fin.open(filename);
 	if (Old::bracketTest(filename)) {
 		polishWrite.transformation(fin);
+		polishWrite.solution("int");
 	}
 	else cout << "Error bracket";
 	fin.close();
