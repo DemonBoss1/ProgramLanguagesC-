@@ -9,6 +9,7 @@ class PolishWrite {
 	list <char> sings;
 	char number;
 	string str;
+	bool closeBracket = false;
 public:
 	PolishWrite() {
 		operationPriority.insert(map<char, int>::value_type('-', 0));
@@ -23,20 +24,21 @@ public:
 	void transformation(ifstream& fin) {
 		char ch1 = ' ', ch2 = ' ';
 		char ch;
-		while (!fin.eof())
+		while ((!fin.eof()) && (!closeBracket))
 		{
 			ch = fin.get();
 			if (comment.checkComment(ch)) {
-				writeVar(ch);
+				writeVar(ch, fin);
 			}
 		}
 		while (!sings.empty()) {
 			composingAnEquation(sings.begin(), partMath.begin());
 		}
-		cout << *partMath.begin() << endl;
+		finishWhite = *partMath.begin();
+		cout << finishWhite << endl;
 	}
 	 
-	void writeVar(char ch) {
+	void writeVar(char ch, ifstream& fin) {
 		switch (ch)
 		{
 		case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':
@@ -49,6 +51,24 @@ public:
 		case '+': case '-': case '*': case '/': case '^':
 			sings.push_back(ch);
 		case '=': case -1:
+			if (number != ' ') {
+				if (str != "") partMath.push_back(str);
+				else {
+					str = number;
+					partMath.push_back(str);
+				}
+				str = "";
+				number = ' ';
+			}
+			break;
+		case '(':
+			if (str != "") cout << "Error!!!";
+			else {
+				string partBracket = partInBracket(fin);
+				partMath.push_back(partBracket);
+			}
+			break;
+		case ')':
 			if (str != "") partMath.push_back(str);
 			else {
 				str = number;
@@ -56,6 +76,7 @@ public:
 			}
 			str = "";
 			number = ' ';
+			closeBracket = true;
 			break;
 		default:
 			cout << "ERROR!!!!" << endl;
@@ -82,6 +103,12 @@ public:
 		}
 		else composingAnEquation(s_it, pm_it);
 	}
+	string partInBracket(ifstream& fin) {
+		PolishWrite polishWrite;
+		polishWrite.transformation(fin);
+		return polishWrite.getFinishWhite();
+	}
+	string getFinishWhite() { return finishWhite; }
 };
 
 void testEx4() {
