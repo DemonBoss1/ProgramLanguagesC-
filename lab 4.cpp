@@ -10,7 +10,9 @@ class PolishWrite {
 	char number;
 	string str;
 	bool closeBracket = false;
+	string result;
 public:
+	vector <string> variables;
 	PolishWrite() {
 		operationPriority.insert(map<char, int>::value_type('-', 0));
 		operationPriority.insert(map<char, int>::value_type('+', 0));
@@ -35,7 +37,9 @@ public:
 			composingAnEquation(sings.begin(), partMath.begin());
 		}
 		finishWhite = *partMath.begin();
-		cout << finishWhite << endl;
+		cout << finishWhite << endl << endl;
+		for (int i = 0; i < variables.size(); i++) cout << "A[" << i << "] = " << variables[i] << endl;
+		cout << endl;
 	}
 	 
 	void writeVar(char ch, ifstream& fin) {
@@ -52,7 +56,13 @@ public:
 			sings.push_back(ch);
 		case '=': case -1:
 			if (number != ' ') {
-				if (str != "") partMath.push_back(str);
+				if (str != "") {
+					variables.push_back(str);
+					str = "A[";
+					str += to_string(variables.size() - 1);
+					str += ']';
+					partMath.push_back(str);
+				}
 				else {
 					str = number;
 					partMath.push_back(str);
@@ -69,7 +79,13 @@ public:
 			}
 			break;
 		case ')':
-			if (str != "") partMath.push_back(str);
+			if (str != "") {
+				variables.push_back(str);
+				str = "A[";
+				str += to_string(variables.size() - 1);
+				str += ']';
+				partMath.push_back(str);
+			}
 			else {
 				str = number;
 				partMath.push_back(str);
@@ -105,10 +121,16 @@ public:
 	}
 	string partInBracket(ifstream& fin) {
 		PolishWrite polishWrite;
+		polishWrite.variables = this->variables;
 		polishWrite.transformation(fin);
+		this->variables = polishWrite.getVariables();
 		return polishWrite.getFinishWhite();
 	}
 	string getFinishWhite() { return finishWhite; }
+	vector <string> getVariables() { return variables; }
+	void solution(string type) {
+
+	}
 };
 
 void testEx4() {
