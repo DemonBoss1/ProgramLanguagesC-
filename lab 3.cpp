@@ -50,6 +50,12 @@ public:
 			if (vars[i].name == name) return true;
 		return false;
 	}
+	string getValue(string name) {
+		for (int i = 0; i < vars.size(); i++)
+			if (vars[i].name == name) return vars[i].value;
+		cout << "Error no search value" << endl;
+	}
+
 };
 
 class TableVarible {
@@ -288,6 +294,12 @@ public:
 			}
 		return false;
 	}
+	string getValue(string name) {
+		for (int i = 0; i < table.size(); i++)
+			if (table[i].searchVarible(name)) {
+				return table[i].getValue(name);
+			}
+	}
 	void writeString(char ch) {
 		switch (ch)
 		{
@@ -315,7 +327,7 @@ public:
 	}
 	void calculationValue(char ch) {
 		if (mathematicalExpression == "") {
-			mathematicalExpression = str;
+			mathematicalExpression = getValue(str);
 			str = "";
 		}
 		switch (ch)

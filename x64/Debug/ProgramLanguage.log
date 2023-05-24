@@ -1,3 +1,5 @@
 ﻿  lab 3.cpp
 C:\Users\Дмитрий\OneDrive\Рабочий стол\Учеба\Языки программирования\ProgramLanguage\ProgramLanguage\Comment.h(67): warning C4715: Comment::checkComment: значение возвращается не при всех путях выполнения
+C:\Users\Дмитрий\OneDrive\Рабочий стол\Учеба\Языки программирования\ProgramLanguage\ProgramLanguage\lab 3.cpp(302): warning C4715: TableVarible::getValue: значение возвращается не при всех путях выполнения
+C:\Users\Дмитрий\OneDrive\Рабочий стол\Учеба\Языки программирования\ProgramLanguage\ProgramLanguage\lab 3.cpp(57): warning C4715: TableLine::getValue: значение возвращается не при всех путях выполнения
   ProgramLanguage.vcxproj -> C:\Users\Дмитрий\OneDrive\Рабочий стол\Учеба\Языки программирования\ProgramLanguage\x64\Debug\ProgramLanguage.exe
