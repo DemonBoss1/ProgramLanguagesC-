@@ -195,23 +195,29 @@ public:
 		case '\n': case ';': case '}':	case ':': case '!': case '@': case '#':
 		case '\t': case '^': case '&': case '*': case '+': case '`': case '$': case '%':
 		case '~': case '{': case '<': case '>': case '/': case '?': case '\\': case '|':
-			if (isEqually) if (value == "true" || value == "false" || isInteger(value) || isFloat(value)) {
-				value = str;
-				this->addVarToTable(type, name, value);
-				cout << type << " " << name << " " << value << " " << line << endl;
-				isEqually = false;
-			}
-			else cout << "No write " << line << endl;
+			if (isEqually)
+				if (str == "true" || str == "false" || isInteger(str) || isFloat(str))
+					if ((type == "bool" && (str == "true" || str == "false")) || ((type == "int" || type == "char" || type == "long" || str == "short") && isInteger(str)) || ((type == "float" || type == "double") && isFloat(str))) {
+						value = str;
+						this->addVarToTable(type, name, value);
+						cout << type << " " << name << " " << value << " " << line << endl;
+						isEqually = false;
+					}
+					else cout << "Error type " << line << endl;
+				else cout << "No write " << line << endl;
 			str = type = name = value = "";
 			break;
 		case ',':
-			if (isEqually) if (value == "true" || value == "false" || isInteger(value) || isFloat(value)) {
-				value = str;
-				this->addVarToTable(type, name, value);
-				cout << type << " " << name << " " << value << " " << line << endl;
-				isEqually = false;
-				afterComma = true;
-			}
+			if (isEqually)
+				if (str == "true" || str == "false" || isInteger(str) || isFloat(str))
+					if ((type == "bool" && (str == "true" || str == "false")) || ((type == "int" || type == "char" || type == "long" || str == "short") && isInteger(str)) || ((type == "float" || type == "double") && isFloat(str))) {
+						value = str;
+						this->addVarToTable(type, name, value);
+						cout << type << " " << name << " " << value << " " << line << endl;
+						isEqually = false;
+						afterComma = true;
+					}
+					else cout << "Error type " << line << endl;
 			else cout << "No write " << line << endl;
 			name = value = str = "";
 		case '"': case '\'':

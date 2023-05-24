@@ -16,8 +16,10 @@ int main()
 
 bool isInteger(string word) {
 	bool isNumber = true;
-	for (string::const_iterator k = word.begin(); k != word.end(); ++k)
+	for (string::const_iterator k = word.begin(); k != word.end(); ++k) {
+		if (*(word.begin()) == '-' || *(word.begin()) == '+') continue;
 		isNumber = isNumber && isdigit(*k);
+	}
 	return isNumber;
 }
 bool isFloat(string word) {
@@ -30,6 +32,7 @@ bool isFloat(string word) {
 				continue;
 			}
 			else return false;
+		if (*(word.begin()) == '-' || *(word.begin()) == '+') continue;
 		isNumber = isNumber && isdigit(*k);
 	}
 	return isNumber;
