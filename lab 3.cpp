@@ -299,6 +299,7 @@ public:
 			if (table[i].searchVarible(name)) {
 				return table[i].getValue(name);
 			}
+		cout << "Error no search" << endl;
 	}
 	void writeString(char ch) {
 		switch (ch)
@@ -333,12 +334,24 @@ public:
 		switch (ch)
 		{
 		case ';':
+			if (str != "") {
+
+			}
 			value = mathematicalExpression;
 			this->addVarToTable(type, name, value);
 			cout << type << " " << name << " " << value << " " << line << endl;
 			mathematicalExpression = "";
 			isCalculated = false;
 			isEqually = false;
+		case ' ':
+			break;
+		case '+': case '-':
+			if (mathematicalExpression[mathematicalExpression.size() - 1] == ch) {
+				mathematicalExpression += '1';
+				break;
+			}
+		case'*': case '/': case '^':
+			mathematicalExpression += ch;
 		default:
 			break;
 		}
