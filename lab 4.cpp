@@ -1,5 +1,6 @@
 #include "main.h"
 #include "Comment.h"
+#include "Tree.h"
 
 class PolishWrite {
 	Comment comment;
@@ -322,6 +323,12 @@ public:
 		}
 	}
 	string getResult() { return result; }
+
+	void createTree() {
+		int index = finishWhite.size() - 1;
+		Tree* tree = new Tree(finishWhite, index);
+		tree->print();
+	}
 };
 
 void testEx4() {
@@ -331,10 +338,11 @@ void testEx4() {
 	fin.open(filename);
 	if (Old::bracketTest(filename)) {
 		polishWrite.transformation(fin);
-		polishWrite.solution();
+		polishWrite.createTree();
+		/*polishWrite.solution();
 		ofstream fout("output.txt");
 		fout << polishWrite.getResult();
-		fout.close();
+		fout.close();*/
 	}
 	else cout << "Error bracket";
 	fin.close();

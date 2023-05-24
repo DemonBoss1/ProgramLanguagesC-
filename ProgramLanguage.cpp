@@ -11,7 +11,7 @@ int main()
 	fin.open("Test.txt");
 	cout << Old::bracketTest(fin) << endl;
 	fin.close();*/
-	testEx3();
+	testEx4();
 }
 
 bool isInteger(string word) {

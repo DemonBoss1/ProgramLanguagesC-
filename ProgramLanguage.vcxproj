@@ -138,6 +138,7 @@
   <ItemGroup>
     <ClInclude Include="Comment.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="Tree.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="output.txt" />
