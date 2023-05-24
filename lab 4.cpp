@@ -13,6 +13,7 @@ class PolishWrite {
 	string result;
 	bool isIndex = false;
 	bool isDecided = false;
+	string type = "int";
 public:
 	vector <string> variables;
 	PolishWrite() {
@@ -46,7 +47,9 @@ public:
 	void writeVar(char ch, ifstream& fin) {
 		switch (ch)
 		{
-		case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9': case '.':
+		case '.':
+			type = "float";
+		case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9': 
 			if (number != ' ') {
 				if (str == "")str += number;
 				str += ch;
@@ -130,13 +133,13 @@ public:
 	}
 	string getFinishWhite() { return finishWhite; }
 	vector <string> getVariables() { return variables; }
-	void solution(string type) {
+	void solution() {
 		while (!isDecided) {
-			solutionPart(type);
+			solutionPart();
 		}
 		print();
 	}
-	void solutionPart(string type) {
+	void solutionPart() {
 		char sing = ' ';
 		string num1 = "", num2 = "";
 		string index = "";
@@ -321,7 +324,7 @@ void testEx4() {
 	fin.open(filename);
 	if (Old::bracketTest(filename)) {
 		polishWrite.transformation(fin);
-		polishWrite.solution("float");
+		polishWrite.solution();
 	}
 	else cout << "Error bracket";
 	fin.close();
