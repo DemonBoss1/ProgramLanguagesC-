@@ -27,4 +27,6 @@ stack<char> fileToStack(ifstream& fin);
 bool isInteger(string word);
 bool isFloat(string word);
 
+string calculationExpression(string str);
+
 #endif // !MAIN_H

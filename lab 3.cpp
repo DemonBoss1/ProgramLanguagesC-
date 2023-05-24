@@ -344,7 +344,7 @@ public:
 				}
 				else cout << "Error no sing!!!" << endl;
 			}
-			value = mathematicalExpression;
+			value = calculationExpression(mathematicalExpression);
 			this->addVarToTable(type, name, value);
 			cout << type << " " << name << " " << value << " " << line << endl;
 			mathematicalExpression = "";

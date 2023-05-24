@@ -1,6 +1,12 @@
-﻿  lab 3.cpp
+﻿  Bracket.cpp
+  BracketOld.cpp
+  Histogram.cpp
+  ProgramLanguage.cpp
+  lab 3.cpp
 C:\Users\Дмитрий\OneDrive\Рабочий стол\Учеба\Языки программирования\ProgramLanguage\ProgramLanguage\lab 3.cpp(340,1): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
 C:\Users\Дмитрий\OneDrive\Рабочий стол\Учеба\Языки программирования\ProgramLanguage\ProgramLanguage\lab 3.cpp(357,1): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
   lab 4.cpp
+  transferStack.cpp
   Создание кода...
+C:\Users\Дмитрий\OneDrive\Рабочий стол\Учеба\Языки программирования\ProgramLanguage\ProgramLanguage\lab 4.cpp(357): warning C4715: calculationExpression: значение возвращается не при всех путях выполнения
   ProgramLanguage.vcxproj -> C:\Users\Дмитрий\OneDrive\Рабочий стол\Учеба\Языки программирования\ProgramLanguage\x64\Debug\ProgramLanguage.exe
