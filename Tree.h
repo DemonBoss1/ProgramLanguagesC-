@@ -1,12 +1,28 @@
 #pragma once
 #include "main.h"
+#include "PolishWrite.h"
 
 class Tree {
+	PolishWrite polishWrite;
 public:
 	char data;
 	Tree* left = nullptr;
 	Tree* right = nullptr;
-	Tree(string str, int& index) {
+	Tree(string filename) {
+		ifstream fin;
+		fin.open(filename);
+		if (Old::bracketTest(filename)) {
+			polishWrite.transformation(fin);
+			int index = polishWrite.getFinishWhite().size() - 1;
+			string finishWhite = polishWrite.getFinishWhite();
+			createTree(finishWhite, index);
+			print();
+		}
+		else cout << "Error bracket";
+		fin.close();
+	}
+	Tree(string str, int& index) { createTree(str, index); }
+	void createTree(string str, int& index) {
 		switch (str[index])
 		{
 		case '+': case '-': case '*': case '/': case '^':

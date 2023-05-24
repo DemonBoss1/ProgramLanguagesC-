@@ -4,6 +4,7 @@
 void testTransfer();
 void testEx3();
 void testEx4();
+void testEx5();
 
 int main()
 {
@@ -11,7 +12,7 @@ int main()
 	fin.open("Test.txt");
 	cout << Old::bracketTest(fin) << endl;
 	fin.close();*/
-	testEx4();
+	testEx5();
 }
 
 bool isInteger(string word) {

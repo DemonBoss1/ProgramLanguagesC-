@@ -132,12 +132,14 @@
     <ClCompile Include="Histogram.cpp" />
     <ClCompile Include="lab 3.cpp" />
     <ClCompile Include="lab 4.cpp" />
+    <ClCompile Include="lab 5.cpp" />
     <ClCompile Include="ProgramLanguage.cpp" />
     <ClCompile Include="transferStack.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Comment.h" />
     <ClInclude Include="main.h" />
+    <ClInclude Include="PolishWrite.h" />
     <ClInclude Include="Tree.h" />
   </ItemGroup>
   <ItemGroup>
