@@ -96,11 +96,10 @@ public:
 			str = "";
 			break;
 		case ' ':
-			if (type == "") {
-				if (checkType())
-					type = str;
-
-			}
+			if (searchVarible(str)) name = str;
+			else if (checkType())type = str;
+			str = "";
+			break;
 		case '=':
 			if (searchVarible(str)) {
 				name = str;
@@ -154,10 +153,11 @@ public:
 			}
 			break;
 		case ':': case '.': case '"': case '\'': case '!': case '@': case '#': case '$': case '%':
-		case '\t': case '^': case '&': case '*': case '(': case '-': case '+': case '`':
+		case '\t': case '^': case '*': case '(': case '-': case '+': case '`':
 		case '~': case '[': case '{': case '<': case '>': case '/': case '?': case '\\': case '|':
 			str = "";
 			type = "";
+		case '&':
 			break;
 		case ' ':
 			if (afterComma)

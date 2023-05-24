@@ -155,12 +155,12 @@ namespace Old{
 			}
 			i++;
 		}
-		std:: cout << "Number of unclosed brackets" << endl;
+		/*std:: cout << "Number of unclosed brackets" << endl;
 		for (it = bracketCount.begin(); it != bracketCount.end(); it++) {
 			std::cout << it->first << " " << it->second << endl;
 		}
 		std::cout << "No open bracket: " << countErrorNoOpenBracket << endl;
-		std::cout << "No close bracket: " << countErrorNoCloseBracket << endl;
+		std::cout << "No close bracket: " << countErrorNoCloseBracket << endl;*/
 		fin.seekg(0);
 		return bracketNoError;
 	}

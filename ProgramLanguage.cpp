@@ -11,5 +11,5 @@ int main()
 	fin.open("Test.txt");
 	cout << Old::bracketTest(fin) << endl;
 	fin.close();*/
-	testEx4();
+	testEx3();
 }

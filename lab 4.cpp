@@ -98,6 +98,8 @@ public:
 			number = ' ';
 			closeBracket = true;
 			break;
+		case ' ':
+			break;
 		default:
 			cout << "ERROR!!!!" << endl;
 			break;
