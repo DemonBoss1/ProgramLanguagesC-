@@ -195,22 +195,24 @@ public:
 		case '\n': case ';': case '}':	case ':': case '!': case '@': case '#':
 		case '\t': case '^': case '&': case '*': case '+': case '`': case '$': case '%':
 		case '~': case '{': case '<': case '>': case '/': case '?': case '\\': case '|':
-			if (isEqually) {
+			if (isEqually) if (value == "true" || value == "false" || isInteger(value) || isFloat(value)) {
 				value = str;
 				this->addVarToTable(type, name, value);
 				cout << type << " " << name << " " << value << " " << line << endl;
 				isEqually = false;
 			}
+			else cout << "No write " << line << endl;
 			str = type = name = value = "";
 			break;
 		case ',':
-			if (isEqually) {
+			if (isEqually) if (value == "true" || value == "false" || isInteger(value) || isFloat(value)) {
 				value = str;
 				this->addVarToTable(type, name, value);
 				cout << type << " " << name << " " << value << " " << line << endl;
 				isEqually = false;
 				afterComma = true;
 			}
+			else cout << "No write " << line << endl;
 			name = value = str = "";
 		case '"': case '\'':
 			if (isEqually) {

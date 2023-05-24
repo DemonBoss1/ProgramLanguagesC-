@@ -24,4 +24,7 @@ void bracketTest(ifstream& fin);
 stack<char> stringToStack(string str);
 stack<char> fileToStack(ifstream& fin);
 
+bool isInteger(string word);
+bool isFloat(string word);
+
 #endif // !MAIN_H
