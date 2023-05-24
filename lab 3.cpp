@@ -335,7 +335,12 @@ public:
 		{
 		case ';':
 			if (str != "") {
-
+				int index = mathematicalExpression.size() - 1;
+				if (mathematicalExpression[index] == '+' || mathematicalExpression[index] == '-' || mathematicalExpression[index] == '*' || mathematicalExpression[index] == '/' || mathematicalExpression[index] == '^') {
+					mathematicalExpression += getValue(str);
+					str = "";
+				}
+				else cout << "Error no sing!!!" << endl;
 			}
 			value = mathematicalExpression;
 			this->addVarToTable(type, name, value);
@@ -343,16 +348,26 @@ public:
 			mathematicalExpression = "";
 			isCalculated = false;
 			isEqually = false;
-		case ' ':
+		case ' ': case '\n': case '\t':
 			break;
 		case '+': case '-':
+			if (str != "") {
+				int index = mathematicalExpression.size() - 1;
+				if (mathematicalExpression[index] == '+' || mathematicalExpression[index] == '-' || mathematicalExpression[index] == '*' || mathematicalExpression[index] == '/' || mathematicalExpression[index] == '^') {
+					mathematicalExpression += getValue(str);
+					str = "";
+				}
+				else cout << "Error no sing!!!" << endl;
+			}
 			if (mathematicalExpression[mathematicalExpression.size() - 1] == ch) {
 				mathematicalExpression += '1';
 				break;
 			}
 		case'*': case '/': case '^':
 			mathematicalExpression += ch;
+			break;
 		default:
+			str += ch;
 			break;
 		}
 		

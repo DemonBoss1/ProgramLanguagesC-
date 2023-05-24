@@ -7,8 +7,8 @@ private:
 	bool lineComent = false;
 	bool multilineComment = false;
 	string str = "fhskug/@%@%@76@@)(*+_=-)"
-	int num = -1;
-	int num2 = num++;
+	int num = 10;
+	int num2 = num+++num;
 public:
 	bool checkComment(char ch, int& line) {
 
