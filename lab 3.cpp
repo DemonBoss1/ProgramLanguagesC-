@@ -61,6 +61,8 @@ private:
 	bool afterComma = false;
 	bool isEqually = false;
 	bool isString = false;
+	bool isCalculated = false;
+	string mathematicalExpression = "";
 public:
 	TableVarible(ifstream& fin) {
 		Comment comment;
@@ -96,8 +98,10 @@ public:
 			str = "";
 			break;
 		case ' ':
-			if (searchVarible(str)) name = str;
-			else if (checkType())type = str;
+			if (searchVarible(str)) 
+				name = str;
+			else if (checkType())
+				type = str;
 			str = "";
 			break;
 		case '=':
@@ -183,6 +187,10 @@ public:
 			writeString(ch);
 			return;
 		}
+		if (isCalculated) {
+			calculationValue(ch);
+			return;
+		}
 		switch (ch)
 		{
 		case '=':
@@ -204,6 +212,11 @@ public:
 						isEqually = false;
 					}
 					else cout << "Error type " << line << endl;
+				else if (searchVar(str)) {
+					isCalculated = true;
+					calculationValue(ch);
+					break;
+				}
 				else cout << "No write " << line << endl;
 			str = type = name = value = "";
 			break;
@@ -268,6 +281,13 @@ public:
 			}
 		return false;
 	}
+	bool searchVar(string name) {
+		for (int i = 0; i < table.size(); i++)
+			if (table[i].searchVarible(name)) {
+				return true;
+			}
+		return false;
+	}
 	void writeString(char ch) {
 		switch (ch)
 		{
@@ -292,6 +312,25 @@ public:
 		default:
 			str += ch;
 		}
+	}
+	void calculationValue(char ch) {
+		if (mathematicalExpression == "") {
+			mathematicalExpression = str;
+			str = "";
+		}
+		switch (ch)
+		{
+		case ';':
+			value = mathematicalExpression;
+			this->addVarToTable(type, name, value);
+			cout << type << " " << name << " " << value << " " << line << endl;
+			mathematicalExpression = "";
+			isCalculated = false;
+			isEqually = false;
+		default:
+			break;
+		}
+		
 	}
 };
 
