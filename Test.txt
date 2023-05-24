@@ -6,6 +6,7 @@ private:
 	bool star = false;
 	bool lineComent = false;
 	bool multilineComment = false;
+	string str = "fhskug/@%@%@76@@)(*+_=-)"
 public:
 	bool checkComment(char ch, int& line) {
 

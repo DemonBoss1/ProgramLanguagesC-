@@ -179,14 +179,14 @@ public:
 		}
 	}
 	void checkValue(char ch) {
+		if (isString) {
+			writeString(ch);
+			return;
+		}
 		switch (ch)
 		{
 		case '=':
 			if (isEqually) {
-				if (isString) {
-					str += ch;
-					break;
-				}
 				isEqually = false;
 				break;
 			}
@@ -196,10 +196,6 @@ public:
 		case '\t': case '^': case '&': case '*': case '+': case '`': case '$': case '%':
 		case '~': case '{': case '<': case '>': case '/': case '?': case '\\': case '|':
 			if (isEqually) {
-				if (isString) {
-					str += ch;
-					break;
-				}
 				value = str;
 				this->addVarToTable(type, name, value);
 				cout << type << " " << name << " " << value << " " << line << endl;
@@ -209,10 +205,6 @@ public:
 			break;
 		case ',':
 			if (isEqually) {
-				if (isString) {
-					str += ch;
-					break;
-				}
 				value = str;
 				this->addVarToTable(type, name, value);
 				cout << type << " " << name << " " << value << " " << line << endl;
@@ -222,17 +214,7 @@ public:
 			name = value = str = "";
 		case '"': case '\'':
 			if (isEqually) {
-				if (str[0] == ch) {
-					str += ch;
-					value = str;
-					this->addVarToTable(type, name, value);
-					cout << type << " " << name << " " << value << " " << line << endl;
-					str = type = name = value = "";
-					isEqually = false;
-					isString = false;
-				}
-
-				else if (str == "") {
+				if (str == "") {
 					str += ch;
 					isString = true;
 				}
@@ -240,7 +222,6 @@ public:
 			}
 			break;
 		case ' ':
-			if (isEqually) if (str[0] == '"' || str[0] == '\'') str += ch;
 			break;
 		case '.': case '-': case '(': case ')': case '[': case ']':
 		default:
@@ -278,6 +259,31 @@ public:
 				return true;
 			}
 		return false;
+	}
+	void writeString(char ch) {
+		switch (ch)
+		{
+		case '"': case '\'':
+			if (str[0] == ch) {
+				str += ch;
+				value = str;
+				this->addVarToTable(type, name, value);
+				cout << type << " " << name << " " << value << " " << line << endl;
+				str = type = name = value = "";
+				isEqually = false;
+				isString = false;
+			}
+			else str += ch;
+			break;
+		case '\n':
+			cout << "ERROR string write!!" << endl;
+			str = type = name = value = "";
+			isEqually = false;
+			isString = false;
+			break;
+		default:
+			str += ch;
+		}
 	}
 };
 
