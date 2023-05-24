@@ -241,6 +241,17 @@ public:
 				}
 				else finishWhite.insert(j, num1);
 			}
+			else if (sing == '^') {
+				num1 = to_string(pow(stoi(num2), stoi(num1)));
+				if (num1.size() > 1) {
+					variables.push_back(num1);
+					str = "A[";
+					str += to_string(variables.size() - 1);
+					str += ']';
+					finishWhite.insert(j, str);
+				}
+				else finishWhite.insert(j, num1);
+			}
 		}
 	}
 };
