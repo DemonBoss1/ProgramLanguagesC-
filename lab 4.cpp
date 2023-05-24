@@ -138,6 +138,10 @@ public:
 			solutionPart();
 		}
 		print();
+		if (finishWhite.size() > 1) {
+			result = variables[variables.size() - 1];
+		}
+		else result = finishWhite;
 	}
 	void solutionPart() {
 		char sing = ' ';
@@ -315,6 +319,7 @@ public:
 			}
 		}
 	}
+	string getResult() { return result; }
 };
 
 void testEx4() {
@@ -325,6 +330,8 @@ void testEx4() {
 	if (Old::bracketTest(filename)) {
 		polishWrite.transformation(fin);
 		polishWrite.solution();
+		ofstream fout("output.txt");
+		fout << polishWrite.getResult();
 	}
 	else cout << "Error bracket";
 	fin.close();
