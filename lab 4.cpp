@@ -253,6 +253,64 @@ public:
 				else finishWhite.insert(j, num1);
 			}
 		}
+		else if (type == "float") {
+			if (sing == '+') {
+				num1 = to_string(stof(num1) + stof(num2));
+				if (num1.size() > 1) {
+					variables.push_back(num1);
+					str = "A[";
+					str += to_string(variables.size() - 1);
+					str += ']';
+					finishWhite.insert(j, str);
+				}
+				else finishWhite.insert(j, num1);
+
+			}
+			else if (sing == '-') {
+				num1 = to_string(stof(num2) - stof(num1));
+				if (num1.size() > 1) {
+					variables.push_back(num1);
+					str = "A[";
+					str += to_string(variables.size() - 1);
+					str += ']';
+					finishWhite.insert(j, str);
+				}
+				else finishWhite.insert(j, num1);
+			}
+			else if (sing == '*') {
+				num1 = to_string(stof(num1) * stof(num2));
+				if (num1.size() > 1) {
+					variables.push_back(num1);
+					str = "A[";
+					str += to_string(variables.size() - 1);
+					str += ']';
+					finishWhite.insert(j, str);
+				}
+				else finishWhite.insert(j, num1);
+			}
+			else if (sing == '/') {
+				num1 = to_string(stof(num2) / stof(num1));
+				if (num1.size() > 1) {
+					variables.push_back(num1);
+					str = "A[";
+					str += to_string(variables.size() - 1);
+					str += ']';
+					finishWhite.insert(j, str);
+				}
+				else finishWhite.insert(j, num1);
+			}
+			else if (sing == '^') {
+				num1 = to_string(pow(stof(num2), stof(num1)));
+				if (num1.size() > 1) {
+					variables.push_back(num1);
+					str = "A[";
+					str += to_string(variables.size() - 1);
+					str += ']';
+					finishWhite.insert(j, str);
+				}
+				else finishWhite.insert(j, num1);
+			}
+		}
 	}
 };
 
@@ -263,7 +321,7 @@ void testEx4() {
 	fin.open(filename);
 	if (Old::bracketTest(filename)) {
 		polishWrite.transformation(fin);
-		polishWrite.solution("int");
+		polishWrite.solution("float");
 	}
 	else cout << "Error bracket";
 	fin.close();
