@@ -42,6 +42,7 @@ public:
 				if (ch == '\n') {
 					lineComent = false;
 					line++;
+					return true;
 				}
 			}
 			else {
@@ -53,16 +54,16 @@ public:
 					if (!star) {
 						solidus = false;
 						multilineComment = false;
+						return true;
 					}
 					break;
 				case '\n':
 					line++;
-					break;
 				default:
 					star = true;
 				}
 			}
-
+			return false;
 		}
 	}
 	bool checkComment(char ch) {

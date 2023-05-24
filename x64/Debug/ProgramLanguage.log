@@ -1,7 +1,6 @@
 ﻿  lab 3.cpp
-C:\Users\Дмитрий\OneDrive\Рабочий стол\Учеба\Языки программирования\ProgramLanguage\ProgramLanguage\lab 3.cpp(338,1): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-C:\Users\Дмитрий\OneDrive\Рабочий стол\Учеба\Языки программирования\ProgramLanguage\ProgramLanguage\lab 3.cpp(355,1): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
-C:\Users\Дмитрий\OneDrive\Рабочий стол\Учеба\Языки программирования\ProgramLanguage\ProgramLanguage\Comment.h(67): warning C4715: Comment::checkComment: значение возвращается не при всех путях выполнения
-C:\Users\Дмитрий\OneDrive\Рабочий стол\Учеба\Языки программирования\ProgramLanguage\ProgramLanguage\lab 3.cpp(303): warning C4715: TableVarible::getValue: значение возвращается не при всех путях выполнения
-C:\Users\Дмитрий\OneDrive\Рабочий стол\Учеба\Языки программирования\ProgramLanguage\ProgramLanguage\lab 3.cpp(57): warning C4715: TableLine::getValue: значение возвращается не при всех путях выполнения
+C:\Users\Дмитрий\OneDrive\Рабочий стол\Учеба\Языки программирования\ProgramLanguage\ProgramLanguage\lab 3.cpp(340,1): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\Дмитрий\OneDrive\Рабочий стол\Учеба\Языки программирования\ProgramLanguage\ProgramLanguage\lab 3.cpp(357,1): warning C4267: инициализация: преобразование из "size_t" в "int"; возможна потеря данных
+  lab 4.cpp
+  Создание кода...
   ProgramLanguage.vcxproj -> C:\Users\Дмитрий\OneDrive\Рабочий стол\Учеба\Языки программирования\ProgramLanguage\x64\Debug\ProgramLanguage.exe

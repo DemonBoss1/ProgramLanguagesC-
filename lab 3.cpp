@@ -54,6 +54,7 @@ public:
 		for (int i = 0; i < vars.size(); i++)
 			if (vars[i].name == name) return vars[i].value;
 		cout << "Error no search value" << endl;
+		return "0";
 	}
 
 };
@@ -299,7 +300,8 @@ public:
 			if (table[i].searchVarible(name)) {
 				return table[i].getValue(name);
 			}
-		cout << "Error no search" << endl;
+		cout << "Error no search " << name << " " << line << endl;
+		return "0";
 	}
 	void writeString(char ch) {
 		switch (ch)
